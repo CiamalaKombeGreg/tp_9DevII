@@ -14,17 +14,26 @@ class Fraction:
 
         PRE : Receive 2 integers which correspond to the numerator and denumerator
         POST : store values in 2 internal variable : self.num and self.den
+        RAISE : - ZeroDivisionError ==> If the denominator of one of the two object
+                or both are equal to zero
+                - AttributError if the parameter doesn't have any attribut
+                - TypeError if the parameter isn't a corresponding value
         """
-        if den == 0:
-            raise ZeroDivisionError("denominator is null")
-        num = int(round(num))
-        den = int(round(den))
-        counter = -1 if num >= 0 else 1
-        for i in range(num, 0, counter):
-            if num % i == 0 and den % i == 0:
-                (num, den) = (num / abs(i), den / abs(i))
-        self.__num = int(num)
-        self.__den = int(den)
+        try:
+            num = int(round(num))
+            den = int(round(den))
+            counter = -1 if num >= 0 else 1
+            for i in range(num, 0, counter):
+                if num % i == 0 and den % i == 0:
+                    (num, den) = (num / abs(i), den / abs(i))
+            self.__num = int(num)
+            self.__den = int(den)
+        except AttributeError as ae:
+            print(f"No required attributs has been found : {ae}")
+        except TypeError as tae:
+            print(f"Type is not corresponding : {tae}")
+        except ZeroDivisionError:
+            print("denominator is null")
 
     @property
     def numerator(self):
@@ -63,6 +72,7 @@ class Fraction:
 
         PRE : Call himself as a parameter
         POST : Return a reduced version of the fraction given in a mixed form
+        
         """
         if self.__den == 0:
             raise ZeroDivisionError("denominator is null")
@@ -278,9 +288,9 @@ class Fraction:
             raise ZeroDivisionError("denominator is null")
         result = self.__num / self.__den
         if -1 < result < 1:
-            return f"Proper"
+            return "Proper"
         else:
-            return f"Not proper"
+            return "Not proper"
 
     def is_unit(self):
         """Check if a fraction's numerator is 1 in its reduced form
